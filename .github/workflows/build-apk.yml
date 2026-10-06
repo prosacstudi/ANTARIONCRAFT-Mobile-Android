@@ -1,0 +1,36 @@
+name: Compilar APK ANTARIONCRAFT Mobile
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Preparar Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Extraer proyecto
+        run: |
+          unzip -o ANTARIONCRAFT-Mobile-CloudBuild.zip -d proyecto
+          find proyecto -name settings.gradle.kts -print
+
+      - name: Compilar APK
+        run: |
+          cd proyecto/ANTARIONCRAFT-Mobile-Android
+          gradle --no-daemon assembleDebug
+
+      - name: Publicar APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: ANTARIONCRAFT-Mobile-debug-APK
+          path: proyecto/ANTARIONCRAFT-Mobile-Android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
