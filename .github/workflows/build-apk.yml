@@ -20,7 +20,7 @@ jobs:
 
       - name: Extraer proyecto
         run: |
-          unzip -o ANTARIONCRAFT-Mobile-CloudBuild.zip -d proyecto
+          unzip -o ANTARIONCRAFT-Mobile-CloudBuild-FIX-Java17.zip -d proyecto
           find proyecto -name settings.gradle.kts -print
 
       - name: Compilar APK
